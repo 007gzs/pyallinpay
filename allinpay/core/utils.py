@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+import copy
 import hashlib
 import json
 import random
@@ -41,7 +42,7 @@ class AllInPayMd5Signer(AllInPaySigner):
     @property
     def signature(self):
         """Get data signature"""
-        data = self._data.copy()
+        data = copy.copy(self._data)
         if self._key:
             data.append(to_binary(self._key))
         data.sort()
