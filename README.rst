@@ -21,7 +21,7 @@ AllInPay Sdk for Python
 
     pip install pyallinpay
 
-升级 dingtalk-sdk 到新版本::
+升级 pyallinpay 到新版本::
 
     pip install -U pyallinpay
 
