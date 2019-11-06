@@ -52,7 +52,7 @@ with open('requirements.txt') as f:
 setup(
     name='pyallinpay',
     version='1.0.0',
-    keywords='pyallinpay, SDK',
+    keywords='pyallinpay, SDK, 通联支付',
     description='AllInPay SDK for Python',
     long_description=long_description,
     url='https://github.com/007gzs/pyallinpay',

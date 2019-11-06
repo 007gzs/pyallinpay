@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 class AllInPayClient(BaseClient):
-
+    """
+    通联支付生产环境
+    """
     gateway = api.Gateway()
     prescanpay = api.PreScanPay()
     qpay = api.QPay()
@@ -61,5 +63,8 @@ class AllInPayClient(BaseClient):
 
 
 class AllInPayTestClient(AllInPayClient):
+    """
+    通联支付测试环境
+    """
     API_BASE_URL = 'https://test.allinpaygd.com/'
     SYB_API_BASE_URL = 'https://test.allinpaygd.com/'

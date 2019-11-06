@@ -111,6 +111,19 @@ class BaseClient(object):
                 request=res.request,
                 response=res
             )
+        if 'trxstatus' in result and result['trxstatus'] != '0000':
+            trxstatus = result['trxstatus']
+            errmsg = result.get('errmsg', trxstatus)
+
+            logger.error("\n【请求地址】: %s\n【请求参数】：%s \n%s\n【错误信息】：%s",
+                         url, kwargs.get('params', ''), kwargs.get('data', ''), result)
+            raise AllInPayClientException(
+                trxstatus,
+                errmsg,
+                client=self,
+                request=res.request,
+                response=res
+            )
 
         return result if not result_processor else result_processor(result)
 
