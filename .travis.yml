@@ -1,0 +1,43 @@
+language: python
+
+# Use container-based infrastructure
+sudo: false
+
+matrix:
+  include:
+    - env: TOX_ENV=py27
+      python: 2.7
+    - env: TOX_ENV=py34
+      python: 3.4
+    - env: TOX_ENV=py35
+      python: 3.5
+    - env: TOX_ENV=py36
+      python: 3.6
+    - env: TOX_ENV=py37
+      python: 3.7
+    - env: TOX_ENV=pypy
+      python: "pypy"
+    - env: TOX_ENV=pypy3
+      python: "pypy3"
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+
+install:
+  - pip install tox
+  - pip install "flake8>=3.7"
+
+before_script:
+  - "flake8 ."
+
+script:
+  tox -e $TOX_ENV
+
+after_success:
+  - |
+    if [[ "${TRAVIS_TAG:-}" != "" && "$TOX_ENV" == "py36" ]]; then
+      python3.6 setup.py sdist bdist_wheel;
+      python3.6 -m pip install twine;
+      python3.6 -m twine upload --skip-existing dist/*;
+    fi
