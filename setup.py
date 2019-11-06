@@ -51,7 +51,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='pyallinpay',
-    version='1.0.0',
+    version='1.0.1',
     keywords='pyallinpay, SDK, 通联支付',
     description='AllInPay SDK for Python',
     long_description=long_description,
