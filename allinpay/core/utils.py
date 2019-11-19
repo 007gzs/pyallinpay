@@ -47,7 +47,7 @@ class AllInPayMd5Signer(AllInPaySigner):
             data.append(to_binary(self._key))
         data.sort()
         str_to_sign = self._delimiter.join(data)
-        return hashlib.md5(str_to_sign).hexdigest().upper()
+        return hashlib.md5(str_to_sign).hexdigest().lower()
 
 
 def to_text(value, encoding='utf-8'):

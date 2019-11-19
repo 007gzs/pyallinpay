@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 import json
 
 import six
+from six.moves.urllib import parse
 from optionaldict import optionaldict
 
 from .base import AllInPayBaseAPI
@@ -263,14 +264,14 @@ class UnitOrder(AllInPayBaseAPI):
         self.add_sign(data)
         return self._post("/apiweb/unitorder/query", data)
 
-    def h5unionpay(self, trxamt, reqsn, returl, notify_url, body,
+    def h5unionpay(self, reqsn, trxamt, returl, notify_url, body,
                    version="12", remark=None, validtime=5, limit_pay=None, asinfo=None):
         """
         H5收银台-订单提交接口
         https://aipboss.allinpay.com/know/devhelp/home.php?id=313
 
-        :param trxamt: 付款金额(单位分)
         :param reqsn: 商户唯一订单号
+        :param trxamt: 付款金额(单位分)
         :param returl: 页面跳转同步通知页面路径
         :param notify_url: 服务器异步通知页面路径
         :param body: 订单标题
@@ -295,4 +296,4 @@ class UnitOrder(AllInPayBaseAPI):
             "asinfo": asinfo,
         })
         self.add_sign(data)
-        return self._post('/apiweb/h5unionpay/unionorder', data, api_base_url=self.SYB_API_BASE_URL)
+        return parse.urljoin(self.SYB_API_BASE_URL, '/apiweb/h5unionpay/unionorder?%s' % parse.urlencode(data))
