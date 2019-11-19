@@ -21,4 +21,4 @@ class UtilityTestCase(unittest.TestCase):
         signer.add_data('123')
         signature = signer.signature
 
-        self.assertEqual('83DE4F53C5FFFE5A7B5BD402C53BA939', signature)
+        self.assertEqual('83de4f53c5fffe5a7b5bd402c53ba939', signature)
