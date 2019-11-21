@@ -1,6 +1,7 @@
 # encoding: utf-8
 from __future__ import absolute_import, unicode_literals
 
+from six.moves.urllib import parse
 from optionaldict import optionaldict
 
 from .base import AllInPayBaseAPI
@@ -67,3 +68,26 @@ class Tranx(AllInPayBaseAPI):
         })
         self.add_sign(data)
         return self._post('/voapiweb/unitorder/refund', data)
+
+    def cuspay(self, c, oid=None, amt=None, trxreserve=None):
+        """
+        自带参数的当面付订单接口
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=292
+
+        :param c: 通联分配的二维码编号
+        :param oid: 订单编号
+        :param amt: 交易金额
+        :param trxreserve: 业务备注信息
+        """
+        if not oid and not amt:
+            raise ValueError("oid和amt不能同时为空")
+
+        data = optionaldict({
+            "appid": self.app_id,
+            "c": c,
+            "oid": oid,
+            "amt": amt,
+            "trxreserve": trxreserve
+        })
+        self.add_sign(data, random_str_key=None)
+        return parse.urljoin(self.SYB_API_BASE_URL, '/sappweb/usertrans/cuspay?%s' % parse.urlencode(data))
