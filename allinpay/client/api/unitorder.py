@@ -264,7 +264,7 @@ class UnitOrder(AllInPayBaseAPI):
         self.add_sign(data)
         return self._post("/apiweb/unitorder/query", data)
 
-    def h5unionpay(self, reqsn, trxamt, returl, notify_url, body,
+    def h5unionpay(self, reqsn, trxamt, returl, notify_url, body, charset='utf-8',
                    version="12", remark=None, validtime=5, limit_pay=None, asinfo=None):
         """
         H5收银台-订单提交接口
@@ -275,6 +275,7 @@ class UnitOrder(AllInPayBaseAPI):
         :param returl: 页面跳转同步通知页面路径
         :param notify_url: 服务器异步通知页面路径
         :param body: 订单标题
+        :param charset: 参数字符编码集
         :param version: 版本号
         :param remark: 订单备注信息
         :param validtime: 有效时间
@@ -296,4 +297,6 @@ class UnitOrder(AllInPayBaseAPI):
             "asinfo": asinfo,
         })
         self.add_sign(data)
-        return parse.urljoin(self.SYB_API_BASE_URL, '/apiweb/h5unionpay/unionorder?%s' % parse.urlencode(data))
+        return parse.urljoin(
+            self.SYB_API_BASE_URL, '/apiweb/h5unionpay/unionorder?%s' % parse.urlencode(data, encoding=charset)
+        )
