@@ -290,6 +290,7 @@ class UnitOrder(AllInPayBaseAPI):
             "returl": returl,
             "notify_url": notify_url,
             "body": body,
+            "charset": charset,
             "version": version,
             "remark": remark,
             "validtime": validtime,
