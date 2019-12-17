@@ -14,6 +14,7 @@ class Posol(AllInPayBaseAPI):
     def authfin(self, reqsn, trxid, trxamt, orgid=None, version='11'):
         """
         预授权完成
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=261
 
         :param reqsn: 商户预授权完成交易流水号
         :param trxid: 交易单号
@@ -36,6 +37,7 @@ class Posol(AllInPayBaseAPI):
     def refund(self, reqsn, trxid, trxamt, orgid=None, version='11', remark=None):
         """
         交易退货
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=262
 
         :param reqsn: 商户退货交易流水号
         :param trxid: 交易单号
@@ -60,6 +62,7 @@ class Posol(AllInPayBaseAPI):
     def cancel(self, reqsn, trxid, trxamt, orgid=None, version='11'):
         """
         交易撤销
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=263
 
         :param reqsn: 商户撤销交易流水号
         :param trxid: 交易单号
@@ -82,6 +85,7 @@ class Posol(AllInPayBaseAPI):
     def query(self, reqsn=None, trxid=None, orgid=None, version='11', remark=None):
         """
         交易查询
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=264
 
         :param orgid: 集团商户号
         :param reqsn: 订单号

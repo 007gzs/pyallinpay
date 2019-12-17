@@ -97,7 +97,19 @@ class BaseClient(object):
         if not isinstance(result, dict):
             return result
         if 'sign' in result:
-            self.check_sign(result)
+            try:
+                self.check_sign(result)
+            except AllInPayClientException as e:
+                logger.error("%s\n【请求地址】: %s\n【请求参数】：%s \n%s\n【错误信息】：%s",
+                             e, url, kwargs.get('params', ''), kwargs.get('data', ''), result)
+                raise AllInPayClientException(
+                    e.errcode,
+                    e.errmsg,
+                    client=self,
+                    request=res.request,
+                    response=res
+                )
+
         if 'retcode' in result and result['retcode'] != 'SUCCESS':
             retcode = result['retcode']
             retmsg = result.get('retmsg', retcode)

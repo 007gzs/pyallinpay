@@ -15,7 +15,8 @@ class Trxfile(AllInPayBaseAPI):
 
     def get(self, date):
         """
-        对账文件下载接口
+        获取对账单接口
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=109
 
         :param date: 交易日期
         """
@@ -28,3 +29,20 @@ class Trxfile(AllInPayBaseAPI):
         })
         self.add_sign(data)
         return self._post("/apiweb/trxfile/get", data, result_processor=lambda x: x['url'])
+
+    def setttrx(self, settdate):
+        """
+        获取结算单接口
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=422
+
+        :param settdate: 结算日期
+        """
+        if isinstance(settdate, datetime.date):
+            settdate = settdate.strftime("%Y%m%d")
+        data = optionaldict({
+            "cusid": self.cus_id,
+            "appid": self.app_id,
+            "settdate": settdate
+        })
+        self.add_sign(data)
+        return self._post("/trxfile/setttrx", data, result_processor=lambda x: x['trxlist'])

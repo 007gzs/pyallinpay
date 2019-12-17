@@ -6,7 +6,7 @@ import logging
 from allinpay.core.exceptions import AllInPayClientException
 from . import api
 from .base import BaseClient
-from ..core.utils import AllInPayMd5Signer, random_string
+from ..core.utils import AllInPayMd5Signer, random_string, to_text
 
 
 logger = logging.getLogger(__name__)
@@ -17,10 +17,13 @@ class AllInPayClient(BaseClient):
     通联支付生产环境
     """
     gateway = api.Gateway()
+    posol = api.Posol()
     prescanpay = api.PreScanPay()
     qpay = api.QPay()
     tranx = api.Tranx()
+    trxfile = api.Trxfile()
     unitorder = api.UnitOrder()
+    verify = api.Verify()
 
     def __init__(self, app_id, cus_id, signer_key, timeout=None):
         super(AllInPayClient, self).__init__(timeout)
@@ -33,19 +36,22 @@ class AllInPayClient(BaseClient):
             data[random_str_key] = random_string()
         signer = AllInPayMd5Signer(delimiter=b'&', key=self.signer_key)
         for k, v in data.items():
-            signer.add_data("%s=%s" % (k, v))
+            v = to_text(v)
+            if v:
+                signer.add_data("%s=%s" % (k, v))
         data[sign_key] = signer.signature
         return data
 
     def check_sign(self, data, sign_key="sign"):
-        sign = None
+        sign = ''
         signer = AllInPayMd5Signer(delimiter=b'&', key=self.signer_key)
         for k, v in data.items():
+            v = to_text(v)
             if k == sign_key:
                 sign = v
-            else:
+            elif v:
                 signer.add_data("%s=%s" % (k, v))
-        if sign != signer.signature:
+        if sign.lower() != signer.signature:
             raise AllInPayClientException("SIGNAUTHERR", "签名错误")
 
     def _handle_pre_request(self, method, uri, kwargs):

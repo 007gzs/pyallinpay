@@ -30,6 +30,7 @@ class Verify(AllInPayBaseAPI):
     def bankverify2(self, reqsn, cardno, name, version='11'):
         """
         银行账户二要素验证
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=253
 
         :param reqsn: 请求流水
         :param cardno: 银行卡号
@@ -41,6 +42,7 @@ class Verify(AllInPayBaseAPI):
     def bankverify3(self, reqsn, cardno, name, idno, version='11'):
         """
         银行账户三要素验证
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=254
 
         :param reqsn: 请求流水
         :param cardno: 银行卡号
@@ -53,6 +55,7 @@ class Verify(AllInPayBaseAPI):
     def bankverify4(self, reqsn, cardno, name, idno, phone, version='11'):
         """
         银行账户四要素验证
+        https://aipboss.allinpay.com/know/devhelp/home.php?id=255
 
         :param reqsn: 请求流水
         :param cardno: 银行卡号
