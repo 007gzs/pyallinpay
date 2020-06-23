@@ -1,7 +1,7 @@
 Changelog
 ================
 
-Version 1.1.7
+Version 1.1.8
 ------------------
 + fix to_text 空值判断导致 sign 计算错误
 

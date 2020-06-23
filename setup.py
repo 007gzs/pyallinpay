@@ -47,7 +47,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 with open('requirements.txt') as f:
-    requirements = [l for l in f.read().splitlines() if l]
+    requirements = [line for line in f.read().splitlines() if line]
 
 setup(
     name='pyallinpay',
