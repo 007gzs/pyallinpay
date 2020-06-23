@@ -56,7 +56,7 @@ def to_text(value, encoding='utf-8'):
     :param value: Value to be converted
     :param encoding: Desired encoding
     """
-    if not value:
+    if value is None:
         return ''
     if isinstance(value, six.text_type):
         return value
@@ -71,7 +71,7 @@ def to_binary(value, encoding='utf-8'):
     :param value: Value to be converted
     :param encoding: Desired encoding
     """
-    if not value:
+    if value is None:
         return b''
     if isinstance(value, six.binary_type):
         return value
