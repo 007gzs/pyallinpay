@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+import base64
 import copy
 import hashlib
 import json
@@ -36,18 +37,89 @@ class AllInPaySigner(object):
         for data in args:
             self._data.append(to_binary(data))
 
-
-class AllInPayMd5Signer(AllInPaySigner):
-
     @property
     def signature(self):
         """Get data signature"""
+        raise NotImplementedError
+
+    def verify(self, sign):
+        """check sign"""
+        return self.signature == sign
+
+
+class AllInPayMd5Signer(AllInPaySigner):
+
+    @classmethod
+    def get_public_key(cls, key):
+        return "key=%s" % key
+
+    @classmethod
+    def get_private_key(cls, key):
+        return "key=%s" % key
+
+    @property
+    def signature(self):
         data = copy.copy(self._data)
         if self._key:
             data.append(to_binary(self._key))
         data.sort()
         str_to_sign = self._delimiter.join(data)
         return hashlib.md5(str_to_sign).hexdigest().lower()
+
+    def verify(self, sign):
+        return self.signature == sign
+
+
+class AllInPayRsaSigner(AllInPaySigner):
+
+    @classmethod
+    def get_public_key(cls, key):
+        from Crypto.PublicKey import RSA
+        return RSA.import_key(base64.b64decode(key))
+
+    @classmethod
+    def get_private_key(cls, key):
+        from Crypto.PublicKey import RSA
+        return RSA.import_key(base64.b64decode(key))
+
+    def get_str_to_sign(self):
+        data = copy.copy(self._data)
+        data.sort()
+        return self._delimiter.join(data)
+
+    def get_digest(self):
+        from Crypto.Hash import SHA1
+        return SHA1.new(self.get_str_to_sign())
+
+    @property
+    def signature(self):
+        from Crypto.Signature import pkcs1_15
+        return to_text(base64.b64encode(pkcs1_15.new(self._key).sign(self.get_digest())))
+
+    def verify(self, sign):
+        from Crypto.Signature import pkcs1_15
+        try:
+            pkcs1_15.new(self._key).verify(self.get_digest(), base64.b64decode(sign))
+            return True
+        except (ValueError, TypeError):
+            return False
+
+
+class AllInPaySm2Signer(AllInPayRsaSigner):
+    @classmethod
+    def get_public_key(cls, key):
+        return base64.b64decode(key)
+
+    @classmethod
+    def get_private_key(cls, key):
+        return base64.b64decode(key)
+
+    @property
+    def signature(self):
+        raise RuntimeError("暂不支持")
+
+    def verify(self, sign):
+        raise RuntimeError("暂不支持")
 
 
 def to_text(value, encoding='utf-8'):
