@@ -38,14 +38,17 @@ class AllInPayClient(BaseClient):
         "Yg8cCXHhdGwq7CGE6oJDzJ1P/94HpuVdBf1KidmPxr7HOH+0DAnpeCcx9TcQ=="
     )
 
-    def __init__(self, app_id, cus_id, signer_key, timeout=None, sign_type="md5"):
+    def __init__(self, app_id, cus_id, signer_key, timeout=None, sign_type="md5", public_key=None):
         sign_type = sign_type.lower()
         assert sign_type in SIGNER_CONFIG
         super(AllInPayClient, self).__init__(timeout)
         self.app_id = app_id
         self.cus_id = cus_id
         self.sign_type = sign_type
-        self.signer_key = SIGNER_CONFIG[sign_type][0].get_private_key(signer_key)
+        signer_cls = SIGNER_CONFIG[sign_type][0]
+        self.signer_key = signer_cls.get_private_key(signer_key)
+        if public_key is not None:
+            setattr(self, SIGNER_CONFIG[sign_type][2], signer_cls.get_public_key(public_key))
 
     def get_signer_cls(self, sign_type):
         if sign_type is None:
