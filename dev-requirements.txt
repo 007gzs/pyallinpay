@@ -1,2 +1,3 @@
 -r requirements.txt
+attrs<21.1.0; python_version < '3.5'
 pytest
