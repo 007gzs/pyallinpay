@@ -46,7 +46,7 @@ class Gateway(AllInPayBaseAPI):
             "charset": charset
         })
         self.add_sign(data)
-        return self._post('/apiweb/tranx/queryorder', data)
+        return self._post('/apiweb/gateway/pay', data)
 
     def query(self, orderid=None, trxid=None):
         """
